@@ -2,7 +2,7 @@
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
     <data-source source="LOCAL" name="Users" uuid="50401686-7055-4850-90bf-c5c19f37f773">
-      <driver-ref>sqlite.xerial</driver-ref>
+      <driver-ref>7c836710-fd89-4d56-929b-077462a592b3</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:C:\Users\Luckyblock233\Desktop\java_work_station\Momotalk\Users.db</jdbc-url>

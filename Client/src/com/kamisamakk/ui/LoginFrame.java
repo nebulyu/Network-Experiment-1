@@ -18,7 +18,6 @@ public class LoginFrame extends JFrame {
     JTextField txtUserField;
     JTextField txtPwdField;
     JButton btnLogin;
-    JButton btnReg;
     //好友区控件
     JList friend_list, group_list;
     DefaultListModel friend_model, group_model;
@@ -48,9 +47,6 @@ public class LoginFrame extends JFrame {
         btnLogin = new JButton();
         btnLogin.setText("登录");
 
-        btnReg = new JButton();
-        btnReg.setText("注册");
-
         //左侧登录块
         this.setLayout(null);
         this.add(txtUserField);
@@ -59,8 +55,6 @@ public class LoginFrame extends JFrame {
         txtPwdField.setBounds(10, 50, 100, 30);
         this.add(btnLogin);
         btnLogin.setBounds(10, 90, 100, 30);
-        btnReg.setBounds(10, 130, 100, 30);
-        this.add(btnReg);
 
         // JList是一个view，要添加数据，就是添加到model
         friend_model = new DefaultListModel();// Model
@@ -97,14 +91,6 @@ public class LoginFrame extends JFrame {
                 int key=JOptionPane.showConfirmDialog(null,"是否要退出", "温馨提示",JOptionPane.OK_CANCEL_OPTION);
                 if(key==JOptionPane.OK_CANCEL_OPTION)
                     System.exit(0);
-            }
-        });
-
-        btnReg.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                RegisterFrame.getRegisterFrame();
             }
         });
 
