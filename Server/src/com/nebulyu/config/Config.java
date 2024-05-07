@@ -1,4 +1,4 @@
-package com.kamisamakk.config;
+package com.nebulyu.config;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

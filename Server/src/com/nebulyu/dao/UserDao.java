@@ -1,4 +1,4 @@
-package Server.src.com.kamisamakk.dao;
+package Server.src.com.nebulyu.dao;
 
 import CommonClass.*;
 

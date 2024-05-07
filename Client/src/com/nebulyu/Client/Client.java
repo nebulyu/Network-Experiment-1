@@ -1,4 +1,4 @@
-package Client.src.com.kamisamakk.Client;
+package Client.src.com.nebulyu.Client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,22 +32,6 @@ public class Client {
     public void send(String msg) {
         writer.println(msg);
         writer.flush();
-    }
-    //重连服务器
-    public void reconnect() {
-        while (true) {
-            try {
-                socket=new Socket("localhost",10086);
-                writer=new PrintWriter(socket.getOutputStream());
-                if(socket.isConnected()) {
-                    System.out.println("连接上服务器");
-                    break;
-                }
-            } catch (IOException e) {
-                //e.printStackTrace();
-                System.out.println("无法连接服务器");
-            }
-        }
     }
 
     public Socket getSocket() {

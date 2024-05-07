@@ -1,7 +1,7 @@
-package Server.src.com.kamisamakk.app;
+package Server.src.com.nebulyu.app;
 
-import com.kamisamakk.config.Config;
-import Server.src.com.kamisamakk.server.Server;
+import com.nebulyu.config.Config;
+import Server.src.com.nebulyu.server.Server;
 
 import java.io.IOException;
 

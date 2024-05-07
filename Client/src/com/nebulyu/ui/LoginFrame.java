@@ -1,10 +1,11 @@
-package Client.src.com.kamisamakk.ui;
+package Client.src.com.nebulyu.ui;
 
-import Client.src.com.kamisamakk.Client.Client;
+import Client.src.com.nebulyu.Client.Client;
 import CommonClass.message.*;
 import net.sf.json.JSONObject;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -28,6 +29,7 @@ public class LoginFrame extends JFrame {
     JButton btnSendToAll = new JButton();
     private static LoginFrame loginFrame;
 
+    //create a login ui
     public static LoginFrame getLoginFrame() {
         if (loginFrame == null) {
             loginFrame = new LoginFrame();
@@ -40,12 +42,12 @@ public class LoginFrame extends JFrame {
         System.out.println(Thread.currentThread().getName());
         // TODO Auto-generated constructor stub
 
-        this.setTitle("Momotalk");
+        this.setTitle("Waiting logging in");
 
         txtUserField = new JTextField();
         txtPwdField = new JTextField();
         btnLogin = new JButton();
-        btnLogin.setText("登录");
+        btnLogin.setText("log in");
 
         //左侧登录块
         this.setLayout(null);
@@ -74,25 +76,15 @@ public class LoginFrame extends JFrame {
         this.add(txtSend);
         btnSend.setBounds(790, 430, 80, 30);
         this.add(btnSend);
-        btnSend.setText("发送");
+        btnSend.setText("Send");
         btnSendToAll.setBounds(700, 430, 80, 30);
         this.add(btnSendToAll);
-        btnSendToAll.setText("广播");
+        btnSendToAll.setText("Broadcast");
 
         //窗口布局
         setSize(900, 520);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        this.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent a)
-            {
-                super.windowClosing(a);
-                int key=JOptionPane.showConfirmDialog(null,"是否要退出", "温馨提示",JOptionPane.OK_CANCEL_OPTION);
-                if(key==JOptionPane.OK_CANCEL_OPTION)
-                    System.exit(0);
-            }
-        });
 
         //登录的监听事件
         btnLogin.addMouseListener(new MouseAdapter() {
@@ -118,7 +110,6 @@ public class LoginFrame extends JFrame {
                     groupId = group_list.getSelectedValue().toString().split(" ")[0];
                 } catch (Exception ex) {};
                 if (friendId.isEmpty() && groupId.isEmpty()) {
-                    JOptionPane.showMessageDialog(null,"请选择发送对象！");
                     return ;
                 }
                 RequestChatMsg requestSendMsg=new RequestChatMsg(txtUserField.getText(), friendId, groupId, txtSend.getText());
@@ -175,22 +166,22 @@ public class LoginFrame extends JFrame {
         if (type.equals("RECEIVE")) {
             String sendId=jsonObject.getString("sendId");
             if (targetType.equals(JsonMessage.FRIENDS)) {
-                chat=timeNow+" "+sendId+" 对你说:\n"+chatMsg+"\n";
+                chat=timeNow+" "+sendId+" speak:\n"+chatMsg+"\n";
             } else if (targetType.equals(JsonMessage.GROUPS)){
                 String groupId=jsonObject.getString("groupId");
-                chat=timeNow+" "+sendId+" 在群组 "+groupId+" 中说:\n"+chatMsg+"\n";
-            } else {
-                chat=timeNow+" "+sendId+" 对所有人说:\n"+chatMsg+"\n";
+                chat=timeNow+" "+sendId+" in group "+groupId+" speak:\n"+chatMsg+"\n";
+            } else if (targetType.equals(JsonMessage.ALL)){
+                chat=timeNow+" "+sendId+" speak to all:\n"+chatMsg+"\n";
             }
         } else if (type.equals("SEND")) {
             if (targetType.equals(JsonMessage.FRIENDS)) {
                 String groupId=jsonObject.getString("friendId");
-                chat=timeNow+" 你对 " + groupId + " 说:\n"+chatMsg+"\n";
+                chat=timeNow+" speak to " + groupId + " :\n"+chatMsg+"\n";
             } else if (targetType.equals(JsonMessage.GROUPS)){
                 String groupId=jsonObject.getString("groupId");
-                chat=timeNow+" 你在群组 "+groupId+" 中说:\n"+chatMsg+"\n";
+                chat=timeNow+" speak in group "+groupId+" :\n"+chatMsg+"\n";
             } else {
-                chat=timeNow+" 你对所有人说:\n"+chatMsg+"\n";
+                chat=timeNow+" speak to everyone:\n"+chatMsg+"\n";
             }
         }
         getTxtHistory().append(chat);

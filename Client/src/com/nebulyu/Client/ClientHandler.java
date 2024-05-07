@@ -1,8 +1,8 @@
-package Client.src.com.kamisamakk.Client;
+package Client.src.com.nebulyu.Client;
 
 import CommonClass.*;
 import CommonClass.message.*;
-import Client.src.com.kamisamakk.ui.LoginFrame;
+import Client.src.com.nebulyu.ui.LoginFrame;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -31,12 +31,6 @@ public class ClientHandler implements Runnable {
             try {
                 //接收服务器的信息
                 String msg=reader.readLine();
-                if(msg==null)
-                {
-                    System.out.println("客户端与服务器断开连接");
-                    Client.getClient().reconnect();
-                    break;
-                }
                 JSONObject jsonObject=JSONObject.fromObject(msg);
                 String type=jsonObject.getString("type");
                 if(type.equals(JsonMessage.LOGIN))
@@ -44,10 +38,10 @@ public class ClientHandler implements Runnable {
                     login(jsonObject);
                 }else if(type.equals(JsonMessage.RELOGIN))
                 {
-                    JOptionPane.showMessageDialog(null,"请勿重复登录");
+                    JOptionPane.showMessageDialog(null,"Already logged");
                 }else if(type.equals(JsonMessage.FAIL))
                 {
-                    JOptionPane.showMessageDialog(null,"登录失败");
+                    JOptionPane.showMessageDialog(null,"Wrong password");
                 }else if(type.equals(JsonMessage.FRIENDS))
                 {
                     getFriendsList(jsonObject);
@@ -58,8 +52,7 @@ public class ClientHandler implements Runnable {
                     getGroupsList(jsonObject);
                 }
             } catch (IOException e) {
-                //e.printStackTrace();
-                System.out.println("客户端与服务器断开连接");
+                System.out.println("Lose connection");
                 reconnect();
             }
         }
@@ -72,9 +65,8 @@ public class ClientHandler implements Runnable {
     private void getFriendsList(JSONObject jsonObject) {
         JSONArray jsonArray=jsonObject.getJSONArray("friendsList");
         ArrayList<User> friendsList=(ArrayList<User>) JSONArray.toCollection(jsonArray,User.class);
-//        System.out.println(friendsList);
         LoginFrame.getLoginFrame().getFriendModel().clear();
-        LoginFrame.getLoginFrame().getFriendModel().addElement("我的好友");
+        LoginFrame.getLoginFrame().getFriendModel().addElement("Friends");
         for (User user:friendsList) {
             String text = user.getUserId() + " " + user.getUserName();
             LoginFrame.getLoginFrame().getFriendModel().addElement(text);
@@ -83,9 +75,8 @@ public class ClientHandler implements Runnable {
     private void getGroupsList(JSONObject jsonObject) {
         JSONArray jsonArray=jsonObject.getJSONArray("groupsList");
         ArrayList<Group> groupsList=(ArrayList<Group>) JSONArray.toCollection(jsonArray,Group.class);
-//        System.out.println(groupsList);
         LoginFrame.getLoginFrame().getGroupModel().clear();
-        LoginFrame.getLoginFrame().getGroupModel().addElement("我的群组");
+        LoginFrame.getLoginFrame().getGroupModel().addElement("Groups");
         for (Group group: groupsList) {
             String text = group.getGroupId() + " " + group.getGroupName();
             LoginFrame.getLoginFrame().getGroupModel().addElement(text);
@@ -93,7 +84,6 @@ public class ClientHandler implements Runnable {
     }
 
     private void reconnect() {
-        Client.getClient().reconnect();
         this.socket=Client.getClient().getSocket();
         try {
             reader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -108,19 +98,20 @@ public class ClientHandler implements Runnable {
         User user=responseLogin.getUser();
         if(user!=null)
         {
-            JOptionPane.showMessageDialog(null,"登录成功");
+            JOptionPane.showMessageDialog(null,"Login succeeded");
+            //拉取好友列表
             RequestFriends requestFriends=new RequestFriends(user.getUserId());
             String msg=JsonMessage.ObjToJson(requestFriends);
             Client.getClient().send(msg);
-
+            //拉取群组列表
             RequestGroups requestGroups=new RequestGroups(user.getUserId());
             msg = JsonMessage.ObjToJson(requestGroups);
             Client.getClient().send(msg);
 
-            LoginFrame.getLoginFrame().setTitle("Momotalk " + user.getUserName());
+            LoginFrame.getLoginFrame().setTitle(user.getUserName()+"'s chatting");
         }
         else {
-            JOptionPane.showMessageDialog(null,"登录失败");
+            JOptionPane.showMessageDialog(null,"Login failed");
         }
     }
 }

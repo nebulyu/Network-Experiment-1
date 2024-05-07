@@ -1,6 +1,6 @@
-package Server.src.com.kamisamakk.dao;
+package Server.src.com.nebulyu.dao;
 
-import com.kamisamakk.config.Config;
+import com.nebulyu.config.Config;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

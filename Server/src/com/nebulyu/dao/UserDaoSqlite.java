@@ -1,4 +1,4 @@
-package Server.src.com.kamisamakk.dao;
+package Server.src.com.nebulyu.dao;
 
 import CommonClass.*;
 
@@ -35,7 +35,7 @@ public class UserDaoSqlite implements UserDao {
     @Override
     public User register(User user) {
         Connection connection=DBConnection.getConnection();
-        String sql="insert into tbl_user values(null,?,?,?)";
+        String sql="insert into tbl_user values(null,?,?)";
         PreparedStatement stmt=null;
         PreparedStatement stmt2=null;
         ResultSet set=null;
@@ -43,7 +43,6 @@ public class UserDaoSqlite implements UserDao {
             stmt=connection.prepareStatement(sql);
             stmt.setString(1, user.getUserPassword());
             stmt.setString(2, user.getUserName());
-            stmt.setString(3, user.getSex());
             int ret=stmt.executeUpdate();
             if(ret>0){
                 sql="select max(user_id) max_id from tbl_user";
@@ -51,7 +50,7 @@ public class UserDaoSqlite implements UserDao {
                 set=stmt2.executeQuery();//10039
                 if(set.next()){
                     String userId=set.getString("max_id");
-                    User newUser=new User(userId,user.getUserPassword(),user.getUserName(), user.getSex());
+                    User newUser=new User(userId,user.getUserPassword(),user.getUserName());
                     return newUser;
                 }
 

@@ -1,8 +1,8 @@
-package Server.src.com.kamisamakk.server;
+package Server.src.com.nebulyu.server;
 
 import CommonClass.*;
 import CommonClass.message.*;
-import Server.src.com.kamisamakk.dao.DaoFactory;
+import Server.src.com.nebulyu.dao.DaoFactory;
 import net.sf.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -53,8 +53,6 @@ public class ServerHandler implements Runnable {
                     } else if (object.getString("targetType").equals(JsonMessage.ALL)) {
                         sendChatAllMsg(object);
                     }
-                }else if(type.equals(JsonMessage.REGISTER)) {
-                    register(object);
                 }else if(type.equals(JsonMessage.GROUPS)){
                     sendGroupList(object);
                 }
@@ -65,18 +63,6 @@ public class ServerHandler implements Runnable {
                 break;
             }
         }
-    }
-
-    //注册
-    private void register(JSONObject object) {
-        String msg=object.getString("user");
-        JSONObject jsonObject=JSONObject.fromObject(msg);
-        User user=(User)JSONObject.toBean(jsonObject,User.class);
-        User newUser=DaoFactory.getUserDao().register(user);
-        ResponseRegister responseRegister=new ResponseRegister(newUser);
-        String reMsg=JsonMessage.ObjToJson(responseRegister);
-        writer.println(reMsg);
-        writer.flush();
     }
 
     //转发消息

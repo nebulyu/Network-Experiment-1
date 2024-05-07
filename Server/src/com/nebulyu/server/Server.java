@@ -1,4 +1,4 @@
-package Server.src.com.kamisamakk.server;
+package Server.src.com.nebulyu.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;

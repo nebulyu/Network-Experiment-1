@@ -4,18 +4,16 @@ public class User {
     private String userId;
     private String userPassword;
     private String userName;
-    private String sex;
 
     public User() {
         super();
     }
 
-    public User(String userId, String userPassword, String userName, String sex) {
+    public User(String userId, String userPassword, String userName) {
         super();
         this.userId = userId;
         this.userPassword = userPassword;
         this.userName = userName;
-        this.sex = sex;
     }
 
     public String getUserId() {
@@ -36,17 +34,11 @@ public class User {
     public void setUserName(String userName) {
         this.userName = userName;
     }
-    public String getSex() {
-        return sex;
-    }
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
 
     @Override
     public String toString() {
         return "User [userId=" + userId + ", userPassword=" + userPassword
-                + ", userName=" + userName + ", sex=" + sex + "]";
+                + ", userName=" + userName + "]";
     }
 
 }
